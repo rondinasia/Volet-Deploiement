@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+  <meta charset="UTF-8">
+  <title>Test du déploiement du modèle chargé de la détection des défauts</title>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<script>
+let description = "It's a deep learning-based layer-3 solution for thermal infrared large-scale photovoltaic module inspection from orthorectified big UAV imagery data"
+
+function myFunction()
+{alert(description)}
+</script>
+<body>
+ 
+		<h1 class="text-center">PV Defect Image Classifier </h1>
+    <form class="p-3 text-center" action="/" method = "POST" enctype="multipart/form-data">
+      <input class="form-control" id= "user_image" type="file"  name="imagefile">
+      <input class="btn btn-primary mt-3" type="submit" name="imagefile" value="Predict Class of Defect">
+    </form>
+    
+    <!-- si defaut existe-->
+    {% if pagefirstload %}
+      <h6 class="text-center"> Waiting for the PV image upload ...</h6>
+    {% else %}
+      {% if exist %}
+          <h6 class="text-center"> The defect's most probable class is class {{prediction2}} with {{prediction}}% certainty </h6> <br><br>
+          <h5 class="text-center"> Interprétation de chaque classe :</h5> 
+          <table class="table table-dark">
+          <thead>
+          <tr>
+              <th>Class Number</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Potential failure causes </th>
+              
+          </tr>
+          </thead>
+          <tbody>
+          
+          <tr>
+              <th>Class&nbsp;1</th>
+              <td>One hotspot</td>
+              <td>One cell is substantially heated compared to the rest of the module cells</td>
+              <td>The cell is defective, delaminated or shadowed </td>
+              
+          </tr>
+          <tr>
+              <th>Class&nbsp;2</th>
+              <td>Patchwork pattern of hotspots</td>
+              <td>Multiple cells are substantially heated within a module under a patchwork pattern</td>
+              <td>The module is short-circuited </td>
+              
+          </tr>
+          <tr>
+              <th>Class&nbsp;3</th>
+              <td>Overheated module row</td>
+              <td>A row of cells is warmer compared to other regions of the module</td>
+              <td>The cells' row is open or short-circuited </td>
+              
+          </tr>
+          <tr>
+              <th>Class&nbsp;4</th>
+              <td>Overheated module</td>
+              <td>The module is warmer than regular ones within the installation</td>
+              <td>The module is open-circuited or not connected to the system </td>
+              
+          </tr>
+          <tr>
+              <th>Class&nbsp;5</th>
+              <td>Pointed heating</td>
+              <td>A point-shaped spot exhibiting slightly higher temperature contrast</td>
+              <td>The presence of a local dust deposit or bird dropping </td>
+              
+          </tr>
+          
+          </tbody>   
+          </table>
+      {% else %}
+          <h6 class="text-center"> It's a non-defective module. The PV's health is good and the module has a uniformly textured surface that exhibits no irregular temperature contrasts <br>
+            <em>(True only if you entered a PV thermal image, not any random object!!)</em> </h6>
+      {% endif %}
+    {% endif %}
+    <div class="text-center">
+      <button type="button" class="btn btn-info" onclick="myFunction()">Get infos about the deep learning model</button>
+    </div>
+
+    
+		
+</body>
+</html>
